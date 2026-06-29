@@ -1,0 +1,36 @@
+# AGM Reminder — {{ org.name }}
+
+**To:** All members
+**From:** {{ org.name }} Secretariat
+**Subject:** Annual General Meeting — {{ agm.month_name }} {{ agm_year | default("[year]") }}
+
+---
+
+Dear members,
+
+This is your {{ agm.notice_days }}-day notice that the **{{ org.short_name }} Annual General Meeting** will be held on:
+
+**{{ meeting_date }}, {{ meetings.time_display }} {{ meetings.timezone_display }}**
+**{{ meetings.platform }}** — {{ meetings.link }}
+
+The AGM agenda will be circulated at least {{ agm.notice_days }} days before the meeting.
+
+## Nominations
+
+If you wish to nominate a candidate (including yourself) for any committee role, please submit nominations to the secretariat before **{{ nominations_close_date | default("[nominations close date]") }}**.
+
+## Agenda Items
+
+Members wishing to add items to the AGM agenda should submit these to the secretariat before **{{ agenda_close_date | default("[agenda submissions close date]") }}**.
+
+## Financial Statements
+
+The annual financial statements will be made available to members at least {{ agm.notice_days }} days before the AGM.
+
+---
+
+If you have any questions, please contact the secretariat.
+
+Ngā mihi,
+{{ committee.minutes_prepared_by }}
+Secretary, {{ org.name }}

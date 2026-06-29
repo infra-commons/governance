@@ -1,0 +1,91 @@
+# {{ org.name }} — {{ meeting_type | default("Committee") }} Meeting Minutes
+
+**Meeting Type:** {{ meeting_type | default("Monthly") }}
+**Date & Time:** {{ meeting_date }}, {{ meetings.time_display }} {{ meetings.timezone_display }}
+**Location:** {{ meetings.platform }} — {{ meetings.link }}
+**Present:** {{ present | default("[Names]") }}
+**Apologies:** {{ apologies | default("[Names or 'None recorded']") }}
+**Absent:** {{ absent | default("[Names or 'None recorded']") }}
+
+---
+
+### Previous Minutes
+
+**Meeting Date:** {{ previous_meeting_date | default("[Previous meeting date]") }}
+**Approved by:** {{ previous_minutes_approved_by | default("[Name]") }}
+
+---
+
+### Agenda
+
+| Item | Presenter | Time |
+|------|-----------|------|
+{% for section in meetings.default_sections %}
+| {{ section.name }} | {{ section.presenter }} | {{ section.duration_min }} min |
+{% endfor %}
+
+---
+
+### Action Updates
+
+[Summary of action updates discussed — status changes, blockers, completions]
+
+---
+
+### Reports
+
+#### a) Chair's Report
+
+[Content]
+
+#### b) Treasurer's Report
+
+[Content]
+
+#### c) Subcommittee / Working Group Reports
+
+[Content]
+
+---
+
+### Discussion Items
+
+[Item and outcome/decision for each]
+
+---
+
+### General Business
+
+[Items raised that are not on the agenda, for noting or discussion.]
+
+---
+
+## New Actions
+
+Fill in this table after the meeting. The `scripts/update-actions.py` script reads it
+to append rows to the actions register automatically.
+
+| Action | Responsible |
+|--------|-------------|
+| [Action description] | [Name(s)] |
+
+---
+
+### Action Register
+
+{{ action_register_table | default("[FULL ACTION REGISTER INSERTED HERE — CURRENT STATE POST-MEETING]") }}
+
+---
+
+### Next Meeting
+
+**Date:** {{ next_meeting_date | default("[Next meeting date]") }}
+**Time:** {{ meetings.time_display }} {{ meetings.timezone_display }}
+
+---
+
+### Sign-Off
+
+**Minutes Prepared By:** {{ committee.minutes_prepared_by }}
+**Approved By:**
+**Date Approved:**

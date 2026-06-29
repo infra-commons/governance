@@ -1,0 +1,61 @@
+# Governance configuration — copy this file to `org.yml` and edit it to instantiate for your organisation.
+# `org.yml` is gitignored: keep your real committee names, links, and recipients out of the repo.
+# All templates read from this single config; no other file contains org-specific values.
+# See README.md for how to generate agendas, minutes, and update the actions register.
+
+org:
+  name: "Your Organisation Name"
+  short_name: "ORG"
+
+committee:
+  members:
+    - name: "Chairperson Name"
+      role: "Chair"
+    - name: "Treasurer Name"
+      role: "Treasurer"
+    - name: "Member Name"
+      role: "Member"
+  quorum: 2
+  minutes_prepared_by: "Chairperson Name"
+
+meetings:
+  # Human-readable description of when meetings occur
+  cadence: "first Tuesday of the month"
+  time_display: "8:00pm"
+  timezone: "Pacific/Auckland"
+  timezone_display: "NZST"
+  platform: "Google Meet"
+  link: "https://meet.google.com/your-meeting-link"
+  # Standard agenda sections; edit duration_min and presenter per org
+  default_sections:
+    - name: "Welcome, Apologies, and Confirmation of Previous Minutes"
+      duration_min: 5
+      presenter: "Chair"
+    - name: "Action Updates"
+      duration_min: 15
+      presenter: "Secretary"
+    - name: "Reports"
+      duration_min: 10
+      presenter: "Various"
+    - name: "Discussion / Decision Items"
+      duration_min: 25
+      presenter: "Chair"
+    - name: "General Business"
+      duration_min: 5
+      presenter: "All"
+
+agm:
+  # Month (1-12) when the AGM is typically held
+  month: 11
+  month_name: "November"
+  # Minimum notice days required before AGM (check your constitution)
+  notice_days: 14
+
+email:
+  # method: manual | mailerlite | smtp
+  # "manual" — export PDF and send by hand; no integration configured.
+  # "mailerlite" — use MailerLite API (requires MAILERLITE_API_KEY env var; see README).
+  # "smtp" — send via SMTP relay (requires SMTP_HOST/SMTP_USER/SMTP_PASS env vars; see README).
+  method: "manual"
+  # List of recipient email addresses for meeting distribution (agenda + minutes)
+  distribution_list: []

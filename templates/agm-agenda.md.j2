@@ -1,0 +1,68 @@
+# {{ org.name }} — Annual General Meeting Agenda
+
+**Date & Time:** {{ meeting_date }}, {{ meetings.time_display }} {{ meetings.timezone_display }}
+**Location:** {{ meetings.platform }} — {{ meetings.link }}
+**Participants:** {{ committee.members | map(attribute='name') | join(', ') }} and all members
+
+---
+
+#### 1. Opening and Apologies (5 min)
+
+- Welcome by the Chair
+- Recording of apologies
+
+---
+
+#### 2. Confirmation of Previous AGM Minutes (5 min)
+
+- Adoption of the minutes from the AGM held on {{ previous_agm_date | default("[previous AGM date]") }}
+
+---
+
+#### 3. Chair's Annual Report (10 min)
+
+- Overview of the year's activities, highlights, and challenges
+
+---
+
+#### 4. Treasurer's Financial Report (10 min)
+
+- Presentation of annual financial statements
+- Financial position and outlook
+
+---
+
+#### 5. Election of Officers (10 min)
+
+Positions for election:
+{% for member in committee.members %}
+{% if member.role != "Member" %}
+- **{{ member.role }}**
+{% endif %}
+{% endfor %}
+
+---
+
+#### 6. Committee Appointments (5 min)
+
+- Appointment of committee members for the coming year
+
+---
+
+#### 7. Constitution — Amendments or Ratification (10 min)
+
+- Any proposed amendments (circulated at least {{ agm.notice_days }} days prior)
+
+---
+
+#### 8. General Business (10 min)
+
+- Items submitted by members prior to the meeting
+
+---
+
+### Closure
+
+The Chair declares the Annual General Meeting closed.
+
+**Next AGM:** {{ agm.month_name }} {{ next_agm_year | default("[year]") }}

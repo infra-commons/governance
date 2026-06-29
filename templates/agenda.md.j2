@@ -1,0 +1,47 @@
+# {{ org.name }} — {{ meeting_type | default("Committee") }} Meeting Agenda
+
+**Date & Time:** {{ meeting_date }}, {{ meetings.time_display }} {{ meetings.timezone_display }}
+**Location:** {{ meetings.platform }} — {{ meetings.link }}
+**Participants:** {{ committee.members | map(attribute='name') | join(', ') }}
+
+---
+
+#### 1. Welcome, Apologies, and Confirmation of Previous Minutes ({{ meetings.default_sections[0].duration_min }} min)
+
+- Presenter: {{ meetings.default_sections[0].presenter }}
+- Confirmation of minutes from the meeting held on {{ previous_meeting_date | default("[previous meeting date]") }}.
+
+---
+
+#### 2. Action Updates ({{ meetings.default_sections[1].duration_min }} min)
+
+Review status of all In Progress and New items from the Action Register:
+
+{{ action_items_table | default("[ACTION ITEMS INSERTED HERE — run scripts/generate.py to populate]") }}
+
+---
+
+#### 3. Reports ({{ meetings.default_sections[2].duration_min }} min)
+
+- a) **Chair's Report:** [Topics to be covered]
+- b) **Treasurer's Report:** [Banking/finance update]
+- c) **Subcommittee Reports:** [Working groups update]
+
+---
+
+#### 4. Discussion / Decision Items ({{ meetings.default_sections[3].duration_min }} min)
+
+{{ discussion_items | default("[DISCUSSION ITEMS — list items before the meeting]") }}
+
+---
+
+#### 5. General Business ({{ meetings.default_sections[4].duration_min }} min)
+
+- Items not on the agenda.
+
+---
+
+### Next Meeting
+
+- Date: {{ next_meeting_date | default("[Next meeting date]") }}
+- Time: {{ meetings.time_display }} {{ meetings.timezone_display }}

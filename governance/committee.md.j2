@@ -1,0 +1,26 @@
+# {{ org.name }} — Committee Register
+
+**Last updated:** {{ updated_date | default("[date]") }}
+
+## Current Committee
+
+| Name | Role | Appointed |
+|------|------|-----------|
+{% for member in committee.members %}
+| {{ member.name }} | {{ member.role }} | [date] |
+{% endfor %}
+
+## Quorum
+
+A quorum for committee meetings is {{ committee.quorum }} members.
+
+## Term and Elections
+
+Committee members are elected at the Annual General Meeting (held in {{ agm.month_name }}).
+
+## Contact
+
+| Role | Contact |
+|------|---------|
+| Chair | [contact details] |
+| Secretary / Treasurer | [contact details] |

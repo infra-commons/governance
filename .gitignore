@@ -1,0 +1,13 @@
+# Generated meeting output (agenda.md, minutes.md rendered from templates)
+meetings/
+
+# Environment files for email integration
+.env
+*.env
+
+# OS
+.DS_Store
+
+# Instantiated org config — keep real committee names/links/recipients out of the repo.
+# Copy org.example.yml -> org.yml and edit org.yml.
+org.yml
