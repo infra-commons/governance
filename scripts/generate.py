@@ -6,10 +6,13 @@ Usage:
     python3 scripts/generate.py --template minutes --date 2026-07-07
     python3 scripts/generate.py --template agm-agenda --date 2026-11-04
     python3 scripts/generate.py --template agm-reminder --date 2026-10-21
+    python3 scripts/generate.py --template wallet-check --date 2026-07-06
+    python3 scripts/generate.py --template newsletter-member --date 2026-08-03
 
 Options:
     --config PATH        Path to org config file (default: org.yml)
-    --template NAME      Template name: agenda|minutes|agm-agenda|agm-reminder
+    --template NAME      Template name: agenda|minutes|agm-agenda|agm-reminder|
+                         wallet-check|newsletter-member|newsletter-external
     --date YYYY-MM-DD    Meeting date
     --previous-date DATE Previous meeting date (agenda/minutes confirmation item)
     --output PATH        Output file path (default: meetings/YYYY-MM-DD/{template}.md)
@@ -54,7 +57,15 @@ def main() -> None:
     parser.add_argument(
         "--template",
         required=True,
-        choices=["agenda", "minutes", "agm-agenda", "agm-reminder"],
+        choices=[
+            "agenda",
+            "minutes",
+            "agm-agenda",
+            "agm-reminder",
+            "wallet-check",
+            "newsletter-member",
+            "newsletter-external",
+        ],
         help="Template to render",
     )
     parser.add_argument("--date", required=True, help="Meeting date (YYYY-MM-DD)")

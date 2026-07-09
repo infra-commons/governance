@@ -1,0 +1,49 @@
+# Reminder schedule — copy to `reminders.yml` alongside your gitignored org.yml
+# if any entry needs org-specific dates, otherwise this file can be used as-is.
+#
+# Consumed by a scheduler that runs ONCE PER DAY and evaluates every rule in the
+# org's timezone (org.yml meetings.timezone). Evaluating locally in code — rather
+# than encoding each reminder as its own cron expression — avoids UTC↔local drift
+# across daylight-saving transitions. See docs/reminders.md for the full schema
+# and rule grammar, and scripts/validate-reminders.py to check a schedule file.
+#
+# Fields:
+#   id             unique slug
+#   rule           monthly:<ordinal>-<weekday> | quarterly:<ordinal>-<weekday>
+#                  | annual:MM-DD | date:YYYY-MM-DD
+#   months         (quarterly only) which months the rule fires in
+#   offset_days    shift the fire date (negative = earlier), default 0
+#   subject        email subject line
+#   body_template  slug of the body template the consumer renders
+#   audience       committee | key-holders
+
+reminders:
+  - id: meeting-prep
+    rule: "monthly:first-tuesday"
+    offset_days: -2
+    subject: "Committee meeting in 2 days — agenda prep due"
+    body_template: "meeting-prep"
+    audience: "committee"
+
+  - id: wallet-check
+    rule: "quarterly:first-monday"
+    months: [1, 4, 7, 10]
+    subject: "Quarterly multisig wallet health check due"
+    body_template: "wallet-check"
+    audience: "key-holders"
+
+  - id: newsletter-deadline
+    rule: "quarterly:first-monday"
+    months: [2, 5, 8, 11]
+    subject: "Quarterly newsletter drafting deadline"
+    body_template: "newsletter-deadline"
+    audience: "committee"
+
+  # AGM milestone reminders are one-off dated entries. Generate them with:
+  #   python3 scripts/agm-timeline.py --agm-date YYYY-MM-DD --emit-reminders
+  # and append the emitted list here, e.g.:
+  # - id: agm-2026-formal-notice
+  #   rule: "date:2026-10-20"
+  #   subject: "AGM prep: Send formal AGM notice and agenda to all members"
+  #   body_template: "agm-milestone"
+  #   audience: "committee"

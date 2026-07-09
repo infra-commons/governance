@@ -1,0 +1,18 @@
+# {{ org.name }} — Quarterly Update
+
+**Issue date:** {{ meeting_date }}
+**Audience:** External stakeholders
+
+---
+
+{% for section in newsletter.external_sections %}
+## {{ section }}
+
+[Draft {{ section | lower }} content here.]
+
+{% endfor %}
+---
+
+You are receiving this update because you have engaged with {{ org.name }}
+(for example at one of our events or through our advocacy work).
+[Unsubscribe]({{ '{{unsubscribe_url}}' }})

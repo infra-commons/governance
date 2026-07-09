@@ -1,0 +1,41 @@
+# {{ org.short_name }} — {{ wallet.scheme }} Multisig Wallet Health Check
+
+**Check date:** {{ meeting_date }}
+**Cadence:** {{ wallet.check_cadence }}
+**Scheme:** {{ wallet.scheme }} multisig
+
+> ⚠️ Never record seed words, passphrases, extended private keys, or any key
+> material in this document or anywhere digital. This record captures only
+> pass/fail confirmations. See `docs/wallet-key-hygiene.md`.
+
+## Per-holder checks
+
+{% for holder in wallet.holders %}
+### {{ holder }}
+
+| Check | Result | Notes |
+|---|---|---|
+| Can locate and access signing device | ☐ Pass / ☐ Fail | |
+| Device unlocks (PIN/passphrase recalled) | ☐ Pass / ☐ Fail | |
+| Device firmware reviewed (update only if advised) | ☐ Pass / ☐ Fail | |
+| Seed backup physically verified intact (location check, do not photograph) | ☐ Pass / ☐ Fail | |
+| Test signature produced (PSBT sign-check, no broadcast required) | ☐ Pass / ☐ Fail | |
+
+{% endfor %}
+## Shared checks
+
+| Check | Result | Notes |
+|---|---|---|
+| Wallet descriptor / output-descriptor backup verified accessible | ☐ Pass / ☐ Fail | |
+| Watch-only wallet balance matches finance records | ☐ Pass / ☐ Fail | |
+| All expected co-signers participated in this check | ☐ Pass / ☐ Fail | |
+| Any personnel/device changes since last check reviewed | ☐ Pass / ☐ Fail | |
+
+## Outcome
+
+- **Overall result:** ☐ Healthy / ☐ Issues found (detail below)
+- **Issues and follow-up actions (add to the actions register):**
+  -
+- **Next check due:** [date, per {{ wallet.check_cadence }} cadence]
+
+Recorded by: {{ committee.minutes_prepared_by }}

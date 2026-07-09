@@ -1,0 +1,17 @@
+# {{ org.name }} — Member Newsletter
+
+**Issue date:** {{ meeting_date }}
+**Audience:** Current members
+
+---
+
+{% for section in newsletter.member_sections %}
+## {{ section }}
+
+[Draft {{ section | lower }} content here.]
+
+{% endfor %}
+---
+
+You are receiving this newsletter because you are a member of {{ org.name }}.
+[Unsubscribe]({{ '{{unsubscribe_url}}' }})

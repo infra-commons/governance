@@ -26,6 +26,9 @@ All org-specific values live in a single config file (`org.yml`). The same templ
    | `agm.month` | Month number (1–12) when the AGM is typically held |
    | `agm.month_name` | Display name of that month |
    | `agm.notice_days` | Minimum notice period required by your constitution |
+   | `agm.milestones` | AGM prep milestones for `scripts/agm-timeline.py` (`id`, `offset_days`, `title`, `owner_role`) |
+   | `wallet` | Multisig treasury config: `scheme`, `check_cadence`, `holders` (roles, not names) — omit if no crypto treasury |
+   | `newsletter` | Newsletter cadence and section lists for the member/external editions |
    | `email.method` | `manual` \| `mailerlite` \| `smtp` — see [ADR: Email Routing](docs/adr-001-email-routing.md) |
    | `email.distribution_list` | List of recipient email addresses for meeting distribution |
 
@@ -97,6 +100,69 @@ python3 scripts/generate.py --template agm-agenda --date 2026-11-04
 
 The AGM agenda election section lists only committee roles other than `Member` (Chair, Treasurer, Secretary, etc.) because general member positions are typically open to nomination at the meeting.
 
+### Generate the AGM prep timeline
+
+As soon as an AGM date is proposed, generate the full preparation timeline
+from `agm.milestones` — a dated checklist, an importable calendar, and
+(optionally) reminder-schedule entries:
+
+```bash
+python3 scripts/agm-timeline.py --agm-date 2026-11-03 --ics --emit-reminders
+# Written: meetings/agm-2026/timeline.md
+# Written: meetings/agm-2026/timeline.ics
+# Written: meetings/agm-2026/reminders.agm.yml
+```
+
+Regenerate if the date changes. See `runbooks/agm-cycle.md`.
+
+## Wallet health checks
+
+For orgs holding a crypto treasury in an N-of-M multisig (configured under
+`wallet:` in `org.yml`), generate the periodic health-check record:
+
+```bash
+python3 scripts/generate.py --template wallet-check --date 2026-07-06
+```
+
+Process and escalation: `runbooks/wallet-cycle.md` and
+`docs/wallet-key-hygiene.md`. Health-check records capture pass/fail only —
+never key material.
+
+## Newsletters
+
+Two quarterly editions with config-driven sections (`newsletter.*` in
+`org.yml`): one for members, one for external stakeholders.
+
+```bash
+python3 scripts/generate.py --template newsletter-member --date 2026-08-03
+python3 scripts/generate.py --template newsletter-external --date 2026-08-03
+```
+
+The footer carries a literal `{{unsubscribe_url}}` token for per-recipient
+substitution at send time. Process: `runbooks/newsletter-cycle.md`.
+
+## Automated reminders
+
+`reminders.example.yml` defines a declarative schedule (meeting prep, wallet
+checks, newsletter deadlines, AGM milestones) that a daily scheduler can
+consume — schema and design notes in `docs/reminders.md`. Validate with:
+
+```bash
+python3 scripts/validate-reminders.py --file reminders.example.yml
+```
+
+## Runbooks
+
+Step-by-step operating procedures, each ending with a dry-run verification:
+
+| Runbook | Covers |
+|---|---|
+| `runbooks/meeting-cycle.md` | Agenda → meeting → minutes → actions register |
+| `runbooks/agm-cycle.md` | Timeline, notice, papers, filing |
+| `runbooks/wallet-cycle.md` | Quarterly multisig health checks, escalation |
+| `runbooks/newsletter-cycle.md` | Drafting, review, send, suppression rules |
+| `runbooks/membership-cycle.md` | Signup, renewal, receipts, lapse, reporting |
+
 ## Governance admin files
 
 | File | Purpose |
@@ -119,25 +185,41 @@ python3 scripts/generate.py --template ../governance/committee --date $(date +%F
 ```
 ├── org.example.yml                ← committed template (placeholders)
 ├── org.yml                        ← your org config (gitignored; cp from example)
+├── reminders.example.yml          ← declarative reminder schedule (see docs/reminders.md)
 ├── templates/
 │   ├── agenda.md.j2               ← committee meeting agenda
 │   ├── minutes.md.j2              ← committee meeting minutes
 │   ├── actions-register.md.j2     ← initial empty actions register
 │   ├── agm-agenda.md.j2           ← AGM agenda
-│   └── agm-reminder.md.j2         ← AGM notice email
+│   ├── agm-reminder.md.j2         ← AGM notice email
+│   ├── wallet-check.md.j2         ← multisig wallet health-check record
+│   ├── newsletter-member.md.j2    ← member newsletter skeleton
+│   └── newsletter-external.md.j2  ← external stakeholder newsletter skeleton
 ├── governance/
 │   ├── committee.md.j2            ← committee register (rendered from config)
 │   └── constitution-placeholder.md
+├── runbooks/                      ← operating procedures per governance cycle
+│   ├── meeting-cycle.md
+│   ├── agm-cycle.md
+│   ├── wallet-cycle.md
+│   ├── newsletter-cycle.md
+│   └── membership-cycle.md
 ├── scripts/
 │   ├── generate.py                ← renders templates → meetings/YYYY-MM-DD/
-│   └── update-actions.py          ← appends new actions from minutes to register
+│   ├── update-actions.py          ← appends new actions from minutes to register
+│   ├── agm-timeline.py            ← AGM prep timeline: md + .ics + reminder entries
+│   └── validate-reminders.py      ← lints a reminders.yml schedule
 ├── meetings/                      ← gitignored; generated output lives here
 │   ├── YYYY-MM-DD/
 │   │   ├── agenda.md
 │   │   └── minutes.md
+│   ├── agm-YYYY/
+│   │   └── timeline.md / .ics
 │   └── actions-register.md
 └── docs/
-    └── adr-001-email-routing.md   ← email/SMTP/MailerLite routing decision
+    ├── adr-001-email-routing.md   ← email/SMTP/MailerLite routing decision
+    ├── reminders.md               ← reminder schedule schema + design
+    └── wallet-key-hygiene.md      ← N-of-M custody policy
 ```
 
 The `meetings/` directory is gitignored. If you want to version meeting documents, remove that line from `.gitignore`.

@@ -50,6 +50,68 @@ agm:
   month_name: "November"
   # Minimum notice days required before AGM (check your constitution)
   notice_days: 14
+  # Prep milestones for scripts/agm-timeline.py.
+  # offset_days is relative to the AGM date (negative = before, positive = after).
+  # The special value "notice" resolves to -notice_days so the formal notice
+  # milestone always tracks your constitution's notice period.
+  milestones:
+    - id: set-date
+      offset_days: -90
+      title: "Confirm AGM date, venue/platform, and returning officer"
+      owner_role: "Chair"
+    - id: call-reports
+      offset_days: -60
+      title: "Call for officer reports and open committee nominations"
+      owner_role: "Secretary"
+    - id: draft-financials
+      offset_days: -45
+      title: "Draft annual financial statements"
+      owner_role: "Treasurer"
+    - id: formal-notice
+      offset_days: notice
+      title: "Send formal AGM notice and agenda to all members"
+      owner_role: "Secretary"
+    - id: circulate-papers
+      offset_days: -7
+      title: "Circulate AGM papers: officer reports, financial statements, nominations"
+      owner_role: "Secretary"
+    - id: agm
+      offset_days: 0
+      title: "Hold the AGM"
+      owner_role: "Chair"
+    - id: minutes
+      offset_days: 7
+      title: "Draft and circulate AGM minutes"
+      owner_role: "Secretary"
+    - id: file-return
+      offset_days: 30
+      title: "File annual return and financial statements with the registrar"
+      owner_role: "Treasurer"
+
+# Multisig treasury custody — omit this section if the org holds no crypto treasury.
+# Only roles/labels here; real key-holder names belong in your gitignored org.yml.
+wallet:
+  scheme: "2-of-3"
+  check_cadence: "quarterly"
+  holders:
+    - "Key Holder A"
+    - "Key Holder B"
+    - "Key Holder C"
+
+# Quarterly newsletters, two audiences: current members and external stakeholders
+# (e.g. policymakers, journalists, event attendees).
+newsletter:
+  cadence: "quarterly"
+  member_sections:
+    - "From the Chair"
+    - "Policy and advocacy update"
+    - "Events"
+    - "Treasury and membership"
+  external_sections:
+    - "About us"
+    - "Policy positions and submissions"
+    - "News and analysis"
+    - "Upcoming events"
 
 email:
   # method: manual | mailerlite | smtp
